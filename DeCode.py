@@ -39,22 +39,22 @@ def TallyChars(fileStr):
 	#Declaring Arrays and stuff ^
 	for charCur in fileStr:
 		if((charCur in charList) == False):
-		 	charList.append(charCur)
-		 	charCount.append(1) 		
+			charList.append(charCur)
+			charCount.append(1) 		
 		else:
-		 	currentPoint = charList.index(charCur)
+			currentPoint = charList.index(charCur)
 			charCount[currentPoint] = charCount[currentPoint] + 1
 
 	#Character Tally^^^
- 	print("Here are the characters counted:")
+	print("Here are the characters counted:")
 	print(str(charList))
-	print("Here are the amount of times each appeared:"
+	print("Here are the amount of times each appeared:")
 	print(str(charCount))
-	AdditionalCharInfo(charList, charCount, location)
+	AdditionalCharInfo(charList, charCount)
 	unanswered = False
 
 
-def AdditionalCharInfo(unsortedList, unsortedCount, location):
+def AdditionalCharInfo(unsortedList, unsortedCount):
 	percentCount = []
 	charList = [] #this is different from the old charCount and charList for simplification; this is sorted list
 	charPer = [] #this is sorted percents
@@ -68,10 +68,10 @@ def AdditionalCharInfo(unsortedList, unsortedCount, location):
 	print(str(sum(percentCount)) + "%")
 	charPer = sorted(percentCount)
 	charList = SortChars(unsortedList, percentCount)
-	print"Here are the characters sorted from least to greatest:"
+	print("Here are the characters sorted from least to greatest:")
 	i = 0
 	for i in range(len(charList)):
-		print "'"+ str(charList[i]) + "'"+(' '*24)+ str(charPer[i])
+		print("'"+ str(charList[i]) + "'"+(' '*24)+ str(charPer[i]))
 	#print charList
 	#print "And here is the percentages of each:"
 	#rint charPer
