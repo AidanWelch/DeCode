@@ -23,7 +23,7 @@ def FindFile():
 	while True:
 		answer = raw_input("Type Y if correct or N if false: ")
 		if answer.upper() == "Y":
-			TallyChars(location)
+			TallyChars(fileStr)
 			break
 		elif answer.upper() == "N":
 			FindFile()
