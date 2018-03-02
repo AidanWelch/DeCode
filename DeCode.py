@@ -3,7 +3,7 @@ if sys.version_info[0]>2:raw_input=input
 import os
 import string
 def Start():
-	print("\nD:\Code initially by Aidan Welch\n")
+	print("\nD:\\Code initially by Aidan Welch\n")
 
 	print("This is merely a tool to assist in deciphering, not an end all be all solution.  Meaning I can't guarantee this will help you.")
 	raw_input("Press Enter(Return) to continue...")
@@ -34,25 +34,18 @@ def FindFile():
 
 def TallyChars(fileStr):
 	#must reopen file because everytime file is read it saves cursor position
-	charList = []
-	charCount = []
+	charCount = {}
 	#Declaring Arrays and stuff ^
 	for charCur in fileStr:
-		if((charCur in charList) == False):
-			charList.append(charCur)
-			charCount.append(1) 		
+		if not (charCur in charCount):
+			charCount[charCur]=1
 		else:
-			currentPoint = charList.index(charCur)
-			charCount[currentPoint] = charCount[currentPoint] + 1
-
+			charCount[charCur] += 1
 	#Character Tally^^^
-	print("Here are the characters counted:")
-	print(str(charList))
-	print("Here are the amount of times each appeared:")
-	print(str(charCount))
-	AdditionalCharInfo(charList, charCount)
-	unanswered = False
-
+	print("Here are the characters counted and the amount of times each appeared:")
+	for charCur in charCount:
+		print("'"+charCur+"': "+str(charCount[charCur]))
+	AdditionalCharInfo(list(charCount.keys()), charCount.values())
 
 def AdditionalCharInfo(unsortedList, unsortedCount):
 	percentCount = []
