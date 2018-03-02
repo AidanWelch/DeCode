@@ -9,27 +9,30 @@ def Start():
 	raw_input("Press Enter(Return) to continue...")
 	FindFile()
 
-
 def FindFile():
 	location = raw_input("Input your file's location: ")
 	while not len(location):
 		location = raw_input("You didn't type anything, try again: ")
-	#Opens the file and finds it
-	file = open(location, "r")
-	print("Following will be the first 4 characters of " + os.path.basename(location) + ":")
-	fileStr=file.read()
-	print(fileStr[0:4])
-	file.close()
-	while True:
-		answer = raw_input("Type Y if correct or N if false: ")
-		if answer.upper() == "Y":
-			TallyChars(fileStr)
-			break
-		elif answer.upper() == "N":
-			FindFile()
-			break
-		else:
-			continue
+	try:
+		#Opens the file and finds it
+		file = open(location, "r")
+		print("Following will be the first 4 characters of " + os.path.basename(location) + ":")
+		fileStr=file.read()
+		print(fileStr[0:4])
+		file.close()
+		while True:
+			answer = raw_input("Type Y if correct or N if false: ")
+			if answer.upper() == "Y":
+				TallyChars(fileStr)
+				break
+			elif answer.upper() == "N":
+				FindFile()
+				break
+			else:
+				continue
+	except:
+		print("That does not appear to be a valid file path")
+		FindFile()
 
 
 def TallyChars(fileStr):
