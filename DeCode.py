@@ -2,6 +2,7 @@ import sys
 if sys.version_info[0]>2:raw_input=input
 import os
 import string
+yesValues=["yes", "y", "yeah", "yep", "yea", "ok", "okay", "true"]
 def Start():
 	print("\nD:\\Code initially by Aidan Welch\n")
 
@@ -10,33 +11,31 @@ def Start():
 	FindFile()
 
 def FindFile():
-	location = raw_input("Input your file's location: ")
-	while not len(location):
-		location = raw_input("You didn't type anything, try again: ")
-	try:
+	while True:
+		location = raw_input("Input your file's location: ")
+		if not len(location): location= raw_input("You didn't type anything, try again: ")
 		#Opens the file and finds it
-		file = open(location, "r")
+		try:
+			file = open(location, "r")
+		except IOError as e:
+			if str(e):print("Error Opening "+location+": "+str(e))
+			else:print("Error Opening "+location)
+			continue
+		#File loaded succesfully
 		print("Following will be the first 4 characters of " + os.path.basename(location) + ":")
 		fileStr=file.read()
 		print(fileStr[0:4])
 		file.close()
 		while True:
 			answer = raw_input("Type Y if correct or N if false: ")
-			if answer.upper() == "Y":
+			if not answer: print("Nothing typed, try again."); continue
+			if answer.lower() in yesValues:
 				TallyChars(fileStr)
-				break
-			elif answer.upper() == "N":
-				FindFile()
-				break
-			else:
-				continue
-	except:
-		print("That does not appear to be a valid file path")
-		FindFile()
+				return
+			else: break #Incorrect try again
 
 
 def TallyChars(fileStr):
-	#must reopen file because everytime file is read it saves cursor position
 	charCount = {}
 	#Declaring Arrays and stuff ^
 	for charCur in fileStr:
@@ -117,7 +116,7 @@ def CompareChars(charList, charPer):
 	try:
 		alphabet = open('/alphabet.txt', "r")
 		alphabet.close()
-	except:
+	except IOError as e:
 		print("Could not access 'alphabet.txt' please add that to this directory.")
 
 #what I have so far in a soon to be tool to compare to the english alphabet and eventually de-cipher
