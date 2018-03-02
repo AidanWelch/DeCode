@@ -114,8 +114,12 @@ def CompareChars(charList, charPer):
 			print charList[i] + " is not in the English alphabet"
 	print charIncluded
 	print perIncluded
-	alphabet = open('/alphabet.txt', "r")
-	alphabet.close()
+	try:
+		alphabet = open('/alphabet.txt', "r")
+		alphabet.close()
+	except:
+		print("Could not access 'alphabet.txt' please add that to this directory.")
+
 #what I have so far in a soon to be tool to compare to the english alphabet and eventually de-cipher
 """
 	
