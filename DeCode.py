@@ -1,11 +1,11 @@
 import collections
 import decimal
 import sys
-if sys.version_info[0]>2:raw_input=input #Checks for Python3 adds raw_input
+if sys.version_info[0]>2:raw_input = input #Checks for Python3 adds raw_input
 import os
 import re
 import string
-yesValues=["yes", "y", "yeah", "yep", "yea", "ok", "okay", "true"]
+yesValues = ["yes", "y", "yeah", "yep", "yea", "ok", "okay", "true"]
 
 def FindFile():
 	"Gets file from user and returns a string of the file" #Docstring
@@ -158,15 +158,15 @@ def Start():
 	print("\nD:\\Code initially by Aidan Welch\n")
 	print("This is merely a tool to assist in deciphering, not an end all be all solution.  Meaning I can't guarantee this will help you.")
 	raw_input("Press Enter(Return) to continue...")
-	fileStr=FindFile()
-	charInfo=TallyChars(fileStr)
-	charInfo=AdditionalCharInfo(charInfo)
-	charInfo=SortCharInfo(charInfo)
-	charsCounted=len(list(charInfo.keys()))
-	percentAccuracy=sum([charInfo[char]["percent"] for char in charInfo])
+	fileStr = FindFile()
+	charInfo = TallyChars(fileStr)
+	charInfo = AdditionalCharInfo(charInfo)
+	charInfo = SortCharInfo(charInfo)
+	charsCounted = len(list(charInfo.keys()))
+	percentAccuracy = sum([charInfo[char]["percent"] for char in charInfo])
 	print("Information about the "+str(charsCounted)+" chars counted from least to greatest")
 	print("Note that percentage is ONLY accurate up to "+str(percentAccuracy)+"%")
 	for char in charInfo:
-		print("Char '%s': Count=%s, Percentage=%s" % (char, charInfo[char]["count"], charInfo[char]["percent"]))
+		print("Char '%s': Count = %s, Percentage = %s" % (char, charInfo[char]["count"], charInfo[char]["percent"]))
 
 Start()
