@@ -170,3 +170,5 @@ def Start():
 		print("Char '%s': Count = %s, Percentage = %s" % (char, charInfo[char]["count"], charInfo[char]["percent"]))
 
 Start()
+
+raw_input("Enter to close")
