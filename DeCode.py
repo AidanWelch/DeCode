@@ -1,7 +1,7 @@
 import collections
 import decimal
 import sys
-if sys.version_info[0]>2:raw_input=input #Checks for Python3 adds raw_input
+if sys.version_info[0]>2:raw_input = input #Checks for Python3 adds raw_input
 import os
 import re
 import string
@@ -119,7 +119,7 @@ def CompareChars(charInfo):
 """
 	charInfo=SortCharPercents(collections.OrderedDict((char, charInfo[char]) for char in charInfo if char in string.ascii_letters))
 	try:
-		alphabetFile = open('alphabet.txt', "r")
+		alphabetFile = open('./resources/alphabet.txt', "r")
 	except IOError:
 		print("Could not access 'alphabet.txt' please add that to this directory.")
 	alphabetString=alphabetFile.read()
