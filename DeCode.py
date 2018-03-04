@@ -5,13 +5,13 @@ if sys.version_info[0]>2:raw_input=input #Checks for Python3 adds raw_input
 import os
 import re
 import string
+import json
 yesValues=["yes", "y", "yeah", "yep", "yea", "ok", "okay", "true"]
 
-def FindFile():
+def FindFile(location=None):
 	"Gets file from user and returns a string of the file" #Docstring
 	while True:
-		location = raw_input("Input your file's location: ")
-		if not len(location): location= raw_input("You didn't type anything, try again: ")
+		if not location: location= raw_input("Input your file's location: ")
 		#Opens the file and finds it
 		try:
 			file = open(location, "r")
@@ -153,12 +153,12 @@ def CompareChars(charInfo):
 	
 
 #what I have so far in a soon to be tool to compare to the english alphabet and eventually de-cipher
-def Start():
+def AnalyzeFile(inFile=None, outFile=None):
 	"Entry point for analyzing a single file" #Docstring
 	print("\nD:\\Code initially by Aidan Welch\n")
 	print("This is merely a tool to assist in deciphering, not an end all be all solution.  Meaning I can't guarantee this will help you.")
 	raw_input("Press Enter(Return) to continue...")
-	fileStr=FindFile()
+	fileStr=FindFile(inFile)
 	charInfo=TallyChars(fileStr)
 	charInfo=AdditionalCharInfo(charInfo)
 	charInfo=SortCharInfo(charInfo)
@@ -166,7 +166,78 @@ def Start():
 	percentAccuracy=sum([charInfo[char]["percent"] for char in charInfo])
 	print("Information about the "+str(charsCounted)+" chars counted from least to greatest")
 	print("Note that percentage is ONLY accurate up to "+str(percentAccuracy)+"%")
+	if outFile:
+		try: f=open(outFile, 'w')
+		except IOError as e:
+			if str(e):print("Error Opening "+outFile+": "+str(e))
+			else:print("Error Opening "+outFile)
+		else:
+			jsonInfo='\t'.join(json.dumps(collections.OrderedDict((char, charInfo[char]["percent"]) for char in charInfo), indent=4).split(' '*4))
+			f.write(jsonInfo)
+			f.close()
 	for char in charInfo:
 		print("Char '%s': Count=%s, Percentage=%s" % (char, charInfo[char]["count"], charInfo[char]["percent"]))
+helpString="""
+D:\\Code initially by Aidan Welch
 
-Start()
+This is merely a tool to assist in deciphering encryption, not an end all be all solution.  Meaning I can't guarantee this will help you.
+
+Command line options:
+	--help (-h, -help):
+		Prints this help and exits
+	--analyze (-a):
+		Analyzes a single file and converts it into a alphabet map,
+		If '-o' is used with this, the program outputs the map as
+		a .json if no other format is specified
+	--output (-o):
+		Specifies output file for any mode
+	--compare (-c):
+		Compares input file with file alphabet.format (format is json by default)
+	--format (-f):
+		Specifies format for output/alphabet files
+		Formats are:
+			json: json format
+			txt: Char followed by percentage on next line
+			xml: WIP
+		Defaults to json
+Examples:
+	Compare a encrypted file, encrypted.txt, to a txt alphabet map, and output to decrypted.txt:
+		%(filename)s --compare --format json --output decryted.txt encrypted.txt
+	Same as above, with abbreviations:
+		%(filename)s -c -f json -o decrypted.txt encrypted.txt
+	You can mix shortened with full options:
+		%(filename)s --format -o decrypted.txt encrypted.txt -c
+	Analyze a file, dictionary.txt, into alphabet.txt
+		%(filename)s -o alphabet.txt dictionary.txt --analyze
+""" % {"filename": __file__}
+argc=len(sys.argv)-1
+inFile=None
+fileFormat=None
+outFile=None
+argOptions=('-h', "-help", "--help", '-o', "--output", '-a', "--analyze", '-c', "--compare", 'f', "--format")
+for i in range(1, argc):
+	if sys.argv[i] in ('-h', "--help", "-help"): print(helpString); exit()
+	elif sys.argv[i] in ('-o', "--output"):
+		if i+1<=argc-1:
+			i+=1
+			outFile=sys.argv[i]
+			continue
+		else:
+			print("-o/--output option used but no output specified!")
+			exit()
+	elif sys.argv[i] in ('-f', "--format"):
+		if i+1<=argc-1:
+			i+=1
+			fileFormat=sys.argv[i]
+			continue
+	elif sys.argv[i] in argOptions: continue
+	else:
+		if not inFile: inFile=sys.argv[i]
+		else: print("Unknown option '"+sys.argv[i]+"' ignored")
+
+if '-a' in sys.argv or "--analyze" in sys.argv:
+	AnalyzeFile(inFile= inFile, outFile= outFile)
+elif '-c' in sys.argv or "--compare" in sys.argv:
+	pass
+else:
+	print("No mode specified!\nUsage: "+__file__+" (--compare | --analyze) [--output, --format]")
